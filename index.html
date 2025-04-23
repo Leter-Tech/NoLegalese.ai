@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>NoLegalese.ai - Turning Complex Docs into Digestible Insights</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --accent: #28a745;
+      --accent-dark: #208737
+    }
+
+    body {
+      font-family: system-ui, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #202124;
+      color: #e8eaed
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 1rem
+    }
+
+    h1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .5rem;
+      font-size: 3rem;
+      margin: 1rem 0;
+      font-weight: 800
+    }
+
+    .tagline {
+      max-width: 830px;
+      margin: 0 auto 1.4rem;
+      font-size: 1rem;
+      line-height: 1.55;
+      text-align: center;
+      color: #b1b1b1
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      align-items: center;
+      margin-bottom: 1rem
+    }
+
+    label {
+      font-weight: 600;
+      flex-basis: 100%
+    }
+
+    input[type=text],
+    textarea,
+    select {
+      flex: 1 1 300px;
+      padding: .55rem;
+      background: #303134;
+      border-color: #444;
+      color: #e8eaed;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 1rem
+    }
+
+    textarea {
+      height: 120px;
+      resize: vertical
+    }
+
+    .file-wrap {
+      position: relative;
+      overflow: hidden;
+      display: inline-block
+    }
+
+    .file-wrap input[type=file] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer
+    }
+
+    .btn,
+    .file-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .55rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      background: #2dab57;
+      color: rgb(0, 0, 0);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background .2s
+    }
+
+    .btn:hover,
+    .file-btn:hover {
+      background: #238a45
+    }
+
+    #summaryBox {
+      background: #303134;
+      border-color: #444;
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-top: 1.2rem;
+      line-height: 1.5
+    }
+
+    #summaryBox h2,
+    #summaryBox h3 {
+      margin: .6rem 0 .3rem
+    }
+
+    #loader {
+      display: none;
+      position: fixed;
+      inset: 0;
+      justify-content: center;
+      align-items: center;
+      background: rgba(32, 33, 36, .6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      pointer-events: none
+    }
+
+    #loader i {
+      font-size: 3rem;
+      color: #2dab57;
+      animation: flipX 1.2s infinite ease-in-out
+    }
+
+    @keyframes flipX {
+      0% {
+        transform: scaleX(1)
+      }
+
+      50% {
+        transform: scaleX(-1)
+      }
+
+      100% {
+        transform: scaleX(1)
+      }
+    }
+
+    .loading .container {
+      filter: blur(2px)
+    }
+
+    #loginModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+    }
+
+    .login-container {
+      background: #303134;
+      color: #e8eaed;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-container img {
+      width: 120px;
+      margin-bottom: 1rem;
+    }
+
+    #googleLoginBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #444;
+      color: #e8eaed;
+      border: 1px solid #555;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      font-weight: 600;
+      margin: 1rem auto 0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #googleLoginBtn:hover {
+      background: #555;
+    }
+
+    .how-it-works {
+      margin: 3rem 0;
+      background: #303134;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      font-size: 2rem;
+      color: #e8eaed;
+      position: relative;
+    }
+
+    .how-it-works h2:after {
+      content: "";
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--accent);
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    .section h3 {
+      margin-bottom: 1.2rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #e8eaed;
+    }
+
+    .section h3:before {
+      content: "";
+      display: block;
+      width: 5px;
+      height: 50px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .doc-type {
+      background: #222;
+      border-radius: 20px;
+      padding: 1.2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .doc-type:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .doc-type h4 {
+      color: var(--accent);
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0px;
+    }
+
+    .doc-type p {
+      margin-bottom: 0;
+      color: #b1b1b1;
+      font-size: 18px;
+    }
+
+    .doc-tabs {
+      margin: 1.5rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .doc-tab {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      background: #444;
+      color: #e8eaed;
+    }
+
+    .doc-tab:hover {
+      background: #555;
+    }
+
+    .doc-tab.active {
+      background: var(--accent);
+      color: black;
+    }
+
+    #docTypeInfo {
+      background: #202124;
+      padding: 1.8rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent);
+      margin-top: 1rem;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    #docTypeInfo h4 {
+      margin-top: 0;
+      color: var(--accent);
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    #docTypeInfo ul {
+      columns: 2;
+      column-gap: 2rem;
+      padding-left: 1.5rem;
+    }
+
+    #docTypeInfo li {
+      margin-bottom: 0.5rem;
+      break-inside: avoid;
+    }
+
+    .chat-example {
+      background: #202124;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-example ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .chat-example li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #444;
+    }
+
+    .chat-example li:last-child {
+      border-bottom: none;
+    }
+
+    .chat-container {
+      background: #303134;
+    }
+
+    .chat-messages {
+      background: #202124;
+    }
+
+    .user-message {
+      background: #28a745;
+      color: white;
+    }
+
+    .ai-message {
+      background: #444;
+      color: #e8eaed;
+    }
+
+    .chat-input {
+      border-top-color: #444;
+    }
+
+    .chat-input input {
+      background: #444;
+      border-color: #555;
+      color: #e8eaed;
+    }
+
+    .typing-indicator {
+      background: #444;
+    }
+
+    @media (prefers-color-scheme: light) {
+      body {
+        background: #f5f7fb;
+        color: #333
+      }
+
+      textarea,
+      input[type=text],
+      select {
+        background: #fff;
+        border-color: #bbb;
+        color: #333
+      }
+
+      #summaryBox {
+        background: #fff;
+        border-color: #ccc
+      }
+
+      .btn,
+      .file-btn {
+        background: var(--accent)
+      }
+
+      .btn:hover,
+      .file-btn:hover {
+        background: var(--accent-dark)
+      }
+
+      .tagline {
+        color: #555
+      }
+
+      #loader {
+        background: rgba(255, 255, 255, .6)
+      }
+
+      #loader i {
+        color: var(--accent)
+      }
+
+      .login-container {
+        background: white;
+        color: #333;
+      }
+
+      #googleLoginBtn {
+        background: #fff;
+        color: #444;
+        border-color: #ddd;
+      }
+
+      #googleLoginBtn:hover {
+        background: #f1f1f1;
+      }
+
+      .how-it-works {
+        background: white;
+      }
+
+      .how-it-works h2,
+      .section h3 {
+        color: #333;
+      }
+
+      .doc-type {
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .doc-type p {
+        color: #555;
+      }
+
+      .doc-tab {
+        background: #eee;
+        color: #333;
+      }
+
+      .doc-tab:hover {
+        background: #e0e0e0;
+      }
+
+      #docTypeInfo {
+        background: #f9f9f9;
+      }
+
+      .chat-example {
+        background: #f5f7fb;
+      }
+
+      .chat-example li {
+        border-bottom-color: #e0e0e0;
+      }
+
+      .chat-container {
+        background: white;
+      }
+
+      .chat-messages {
+        background: white;
+      }
+
+      .user-message {
+        background: #e1f5fe;
+        color: #333;
+      }
+
+      .ai-message {
+        background: #f1f1f1;
+        color: #333;
+      }
+
+      .chat-input {
+        border-top-color: #eee;
+      }
+
+      .chat-input input {
+        background: #fff;
+        border-color: #ddd;
+        color: #333;
+      }
+
+      .typing-indicator {
+        background: #f1f1f1;
+      }
+    }
+
+    #chatModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+    }
+
+    .chat-container {
+      background: white;
+      width: 90%;
+      max-width: 800px;
+      height: 80%;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 1rem;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .chat-header h3 {
+      margin: 0;
+    }
+
+    .chat-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 0.8rem;
+      border-radius: 12px;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background: #e1f5fe;
+    }
+
+    .ai-message {
+      align-self: flex-start;
+      background: #f1f1f1;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 1rem;
+      gap: 0.5rem;
+      border-top: 1px solid #eee;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .chat-input button {
+      padding: 0.8rem 1.2rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .chat-input button:hover {
+      background: var(--accent-dark);
+    }
+
+    .typing-indicator {
+      display: none;
+      align-self: flex-start;
+      background: #f1f1f1;
+      padding: 0.8rem;
+      border-radius: 12px;
+    }
+
+    .typing-indicator span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #888;
+      border-radius: 50%;
+      margin-right: 5px;
+      animation: typing 1s infinite;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .main-content {
+      scroll-margin-top: 2rem;
+    }
+
+    .blurred {
+      filter: blur(5px);
+      pointer-events: none;
+    }
+
+    @media (prefers-color-scheme:dark) {
+      body {
+        background: #202124;
+        color: #e8eaed
+      }
+
+      textarea,
+      input[type=text],
+      select {
+        background: #303134;
+        border-color: #444;
+        color: #e8eaed
+      }
+
+      #summaryBox {
+        background: #303134;
+        border-color: #444
+      }
+
+      .btn,
+      .file-btn {
+        background: #2dab57
+      }
+
+      .btn:hover,
+      .file-btn:hover {
+        background: #238a45
+      }
+
+      .tagline {
+        color: #b1b1b1
+      }
+
+      #loader {
+        background: rgba(32, 33, 36, .6)
+      }
+
+      #loader i {
+        color: #2dab57
+      }
+
+      .login-container {
+        background: #303134;
+        color: #e8eaed;
+      }
+
+      #googleLoginBtn {
+        background: #444;
+        color: #e8eaed;
+        border-color: #555;
+      }
+
+      #googleLoginBtn:hover {
+        background: #555;
+      }
+
+      .chat-container {
+        background: #303134;
+      }
+
+      .chat-messages {
+        background: #202124;
+      }
+
+      .user-message {
+        background: #28a745;
+        color: white;
+      }
+
+      .ai-message {
+        background: #444;
+        color: #e8eaed;
+      }
+
+      .chat-input {
+        border-top-color: #444;
+      }
+
+      .chat-input input {
+        background: #444;
+        border-color: #555;
+        color: #e8eaed;
+      }
+
+      .typing-indicator {
+        background: #444;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js";</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+
+<body>
+  <div id="loginModal">
+    <div class="login-container">
+      <img src="logo.png" alt="NoLegalese.ai Logo">
+      <h2>Welcome to NoLegalese.ai</h2>
+      <p>Sign in to access powerful document analysis tools</p>
+      <button id="googleLoginBtn"><i class="fab fa-google"></i> Sign in with Google</button>
+    </div>
+  </div>
+  <div id="chatModal">
+    <div class="chat-container">
+      <div class="chat-header">
+        <h3>Chat with your document</h3>
+        <button class="chat-close"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="chat-messages">
+        <div class="ai-message message">Hello! I'm NoLegalese AI assistant. Ask me anything about your document.</div>
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Type your question here...">
+        <button id="sendMsgBtn"><i class="fas fa-paper-plane"></i> Send</button>
+      </div>
+    </div>
+  </div>
+  <div id="loader"><i class="fa-solid fa-scale-balanced"></i></div>
+  <div class="container">
+    <h1 style="color: #28a745;"><i class="fa-solid fa-scale-balanced"></i> NoLegalese.ai</h1>
+    <p class="tagline"><strong>NoLegalese.ai</strong> turns 80-page documents into 8-second reports. Drop in any policy,
+      court judgment, contract, research paper, standard, treaty, compliance memo or news article. Our AI picks out the
+      who-must-do-what, deadlines, money bits, definitions, citations &amp; quotables—then hands you a clean, sharable
+      report. With our chat feature, you can also ask specific questions about your document and get instant, contextual
+      answers. Perfect for lawyers, founders, policy wonks, journalists, researchers and sleepless students.</p>
+    <div class="hero-buttons">
+      <button class="btn" id="getStartedBtn"><i class="fas fa-rocket"></i> Get Started</button>
+      <button class="btn" id="pitchdeckBtn"><i class="fas fa-file-pdf"></i> Read Pitchdeck</button>
+    </div>
+    <div class="video-container"
+      style="position:relative; width:70%; margin:0 auto 2rem; padding-bottom:39.375%; height:0; overflow:hidden;">
+      <iframe style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:12px;"
+        src="https://www.youtube.com/embed/2l0uSyEHeGQ" title="NoLegalese.ai Demo" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <div id="mainContent" class="main-content">
+      <div class="row">
+        <label for="docType">Choose a document type</label>
+        <select id="docType">
+          <option value="policy" selected>Policy / Regulation</option>
+          <option value="judgment">Court Judgment</option>
+          <option value="contract">Contract</option>
+          <option value="research">Research Paper</option>
+          <option value="compliance">Compliance Guidance</option>
+          <option value="standard">Technical Standard</option>
+          <option value="treaty">Treaty / Agreement</option>
+          <option value="news">News Article</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="docUrl">Document URL (txt / html / pdf)</label>
+        <input type="text" id="docUrl" placeholder="https://…" />
+        <button class="btn" onclick="loadFromUrl()"><i class="fa-solid fa-download"></i>Load</button>
+      </div>
+      <div class="row">
+        <label>or Upload file (txt / html / pdf)</label>
+        <span class="file-wrap"><button class="file-btn"><i class="fa-solid fa-file-arrow-up"></i>Choose
+            file</button><input type="file" id="fileInput" accept=".txt,.pdf,.html,.htm" /></span>
+      </div>
+      <div class="row">
+        <label for="manualText">or Paste text</label>
+        <textarea id="manualText" placeholder="Paste your document here…"></textarea>
+      </div>
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+        <button id="analyseBtn" class="btn"><i class="fa-solid fa-wand-magic-sparkles"></i>Generate Report</button>
+        <button id="chatBtn" class="btn"><i class="fa-solid fa-comments"></i>Chat with Document</button>
+        <button id="downloadBtn" class="btn" disabled><i class="fa-solid fa-file-pdf"></i>Download PDF</button>
+      </div>
+      <div id="summaryBox" hidden></div>
+    </div>
+  </div>
+  <button id="logoutBtn"
+    style="position:fixed; font-size: 20px; bottom:20px; left:20px; width:50px; height:50px; border-radius:50%; background:var(--accent); color:white; border:none; box-shadow:0 2px 10px rgba(0,0,0,0.2); z-index:100; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+    <i class="fas fa-sign-out-alt"></i>
+  </button>
+  <div id="howItWorks" class="how-it-works">
+    <h2>How NoLegalese.ai Works</h2>
+
+    <div class="section">
+      <h3><i style="margin-left: 5px;" class="fas fa-folder-open"></i>Our Document Types</h3>
+      <p>We process a wide range of document types, each with specialized extraction algorithms designed for their
+        unique structure and content:</p>
+
+      <div
+        style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:4rem; margin-top:2rem; margin-bottom:5rem;">
+        <div class="doc-type">
+          <h4 style="font-size: 22px;"><i class="fas fa-scroll"></i> Policy / Regulation</h4>
+          <p>Government policies, regulations, directives and legislative documents that establish rules and frameworks.
+          </p>
+        </div>
+        <div class="doc-type">
+          <h4 style="font-size: 22px;"><i class="fas fa-gavel"></i> Court Judgment</h4>
+          <p>Legal decisions from courts, tribunals and judicial bodies at any level of the judicial hierarchy.</p>
+        </div>
+        <div class="doc-type">
+          <h4 style="font-size: 22px;"><i class="fas fa-file-signature"></i> Contract</h4>
+          <p>Agreements between parties including NDAs, MSAs, employment contracts, service agreements and more.</p>
+        </div>
+        <div class="doc-type">
+          <h4 style="font-size: 22px;"><i class="fas fa-microscope"></i> Research Paper</h4>
+          <p>Academic articles, scientific papers and published research in any field of study or industry.</p>
+        </div>
+        <div class="doc-type">
+          <h4 style="font-size: 22px;"><i class="fas fa-clipboard-check"></i> Compliance Guidance</h4>
+          <p>Regulatory guidance, compliance frameworks, standards documents and implementation instructions.</p>
+        </div>
+        <div class="doc-type">
+          <h4 style="font-size: 22px;"><i class="fas fa-cogs"></i> Technical Standard</h4>
+          <p>Industry standards, technical specifications, protocol documentation and best practice guidelines.</p>
+        </div>
+        <div class="doc-type">
+          <h4 style="font-size: 22px;"><i class="fas fa-handshake"></i> Treaty / Agreement</h4>
+          <p>International treaties, multilateral agreements, diplomatic documents and formal arrangements.</p>
+        </div>
+        <div class="doc-type">
+          <h4 style="font-size: 22px;"><i class="fas fa-newspaper"></i> News Article</h4>
+          <p>News reports, press releases, journalistic content and current affairs from any outlet or publisher.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3><i style="margin-left: 5px;" class="fas fa-search"></i>What We Extract</h3>
+      <p>Our AI analyzes lengthy documents (often 200-500 pages) and extracts the key information based on the document
+        type. Select a document type below to see what we extract:</p>
+
+      <div class="doc-tabs">
+        <button class="doc-tab active" onclick="showDocInfo('policy')">Policy / Regulation</button>
+        <button class="doc-tab" onclick="showDocInfo('judgment')">Court Judgment</button>
+        <button class="doc-tab" onclick="showDocInfo('contract')">Contract</button>
+        <button class="doc-tab" onclick="showDocInfo('research')">Research Paper</button>
+        <button class="doc-tab" onclick="showDocInfo('compliance')">Compliance Guidance</button>
+        <button class="doc-tab" onclick="showDocInfo('news')">News Article</button>
+        <button class="doc-tab" onclick="showDocInfo('standard')">Technical Standard</button>
+        <button class="doc-tab" onclick="showDocInfo('treaty')">Treaty / Agreement</button>
+      </div>
+
+      <div id="docTypeInfo">
+        <h4><i style="margin-right: 7px;" class="fas fa-scroll"></i>Policy / Regulation</h4>
+        <ul>
+          <li>Title & Date</li>
+          <li>Jurisdiction</li>
+          <li>Summary</li>
+          <li>Scope / Applicability</li>
+          <li>Definitions</li>
+          <li>Exemptions</li>
+          <li>Implementation guidance</li>
+          <li>Cross references</li>
+          <li>Key points</li>
+          <li>Obligations (who must do what)</li>
+          <li>Timelines & deadlines</li>
+          <li>Penalties for violations</li>
+          <li>Benefits</li>
+          <li>Authority contact</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3><i style="margin-left: 5px;" class="fas fa-comment"></i>Chat Assistant</h3>
+      <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-start;">
+        <div style="flex:3; min-width:300px;">
+          <p>Our document chat feature allows you to have a natural conversation with your document after analysis. The
+            assistant:</p>
+          <ul style="padding-left:1.5rem; margin-bottom:1.5rem;">
+            <li>Uses advanced AI to understand document context and structure</li>
+            <li>Maintains conversation history for intuitive follow-up questions</li>
+            <li>Can answer specific questions about content, implications, or relationships</li>
+            <li>Focuses on factual information contained in your document</li>
+            <li>Provides concise, relevant answers rather than lengthy explanations</li>
+            <li>Identifies sections, clauses, and specific provisions on request</li>
+          </ul>
+          <p>Simply load your document, click "Chat with Document" and start asking questions!</p>
+        </div>
+        <div class="chat-example" style="flex:2; min-width:250px;">
+          <div style="font-weight:600; margin-bottom:0.8rem; color:var(--accent);"><i class="fas fa-comments"></i>
+            Example Questions:</div>
+          <ul>
+            <li>"What are the key obligations in section 4?"</li>
+            <li>"When is the filing deadline for annual reports?"</li>
+            <li>"Explain the force majeure clause and its exceptions."</li>
+            <li>"What penalties apply for late submissions?"</li>
+            <li>"Who needs to approve the changes to governance structure?"</li>
+            <li>"Summarize the methodology used in this research."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:1em;text-align:center;margin-top:3rem; margin-bottom:3rem">&copy; NoLegalese.ai - all rights
+    reserved.</p>
+  <script>
+
+    const firebaseConfig = {
+        REMOVED
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    let currentUser = null;
+    let chatHistory = [];
+
+    function formatDateToGMT530(date) {
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      };
+      return date.toLocaleString('en-IN', options).replace(',', '');
+    }
+
+    document.addEventListener('click', function (event) {
+      const element = event.target;
+      var email = '';
+      if (currentUser) {
+        email = firebase.auth().currentUser.email;
+      }
+      else {
+        email = 'Not Signed In';
+      }
+      const clickData = {
+        tagName: element.tagName,
+        id: element.id || null,
+        classList: Array.from(element.classList).join(' ') || null,
+        textContent: element.textContent.trim() || null,
+        timestamp: formatDateToGMT530(new Date()),
+        userInfo: email,
+        page: document.title
+      };
+      firebase.database().ref('clicks').push(clickData);
+    });
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        currentUser = user;
+        document.getElementById('loginModal').style.display = 'none';
+        document.querySelector('.container').classList.remove('blurred');
+      } else {
+        currentUser = null;
+        document.getElementById('loginModal').style.display = 'flex';
+        document.querySelector('.container').classList.add('blurred');
+      }
+    });
+
+    document.getElementById('googleLoginBtn').addEventListener('click', function () {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).catch(function (error) {
+        console.error('Login error:', error);
+        alert('Login failed: ' + error.message);
+      });
+    });
+
+    document.getElementById('getStartedBtn').addEventListener('click', function () {
+      document.getElementById('mainContent').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('pitchdeckBtn').addEventListener('click', function () {
+      window.open('Pitchdeck.pdf', '_blank');
+    });
+
+    document.getElementById('chatBtn').addEventListener('click', function () {
+      const text = document.getElementById('manualText').value.trim();
+      if (!text) {
+        alert('Please load or paste text first');
+        return;
+      }
+      document.getElementById('chatModal').style.display = 'flex';
+    });
+
+    document.querySelector('.chat-close').addEventListener('click', function () {
+      document.getElementById('chatModal').style.display = 'none';
+    });
+
+    document.getElementById('sendMsgBtn').addEventListener('click', sendChatMessage);
+    document.getElementById('chatInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') sendChatMessage();
+    });
+    async function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      input.value = '';
+
+      addMessageToChat(message, 'user');
+
+      document.querySelector('.typing-indicator').style.display = 'block';
+
+      const docText = document.getElementById('manualText').value;
+      const docType = document.getElementById('docType').value;
+
+      logChatMessage(message, 'user');
+      try {
+
+        const response = await chatWithAI(message, docText, docType);
+
+        document.querySelector('.typing-indicator').style.display = 'none';
+
+        addMessageToChat(response, 'ai');
+
+        logChatMessage(response, 'ai');
+      } catch (error) {
+
+        document.querySelector('.typing-indicator').style.display = 'none';
+
+        addMessageToChat('Sorry, I encountered an error: ' + error.message, 'ai');
+      }
+    }
+    function addMessageToChat(text, sender) {
+      const messagesDiv = document.querySelector('.chat-messages');
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message');
+      messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+      messageDiv.textContent = text;
+
+      const typingIndicator = document.querySelector('.typing-indicator');
+      messagesDiv.insertBefore(messageDiv, typingIndicator);
+
+      chatHistory.push({ sender, text });
+
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    function logChatMessage(message, sender) {
+      if (!currentUser) return;
+      firebase.database().ref('userActivity').push({
+        email: currentUser.email,
+        timestamp: formatDateToGMT530(new Date()),
+        type: 'chat',
+        sender: sender,
+        message: message
+      });
+    }
+    async function chatWithAI(message, docText, docType) {
+
+      const context = chatHistory.map(msg => `${msg.sender.toUpperCase()}: ${msg.text}`).join('\n');
+
+      const systemPrompt = `You are an AI assistant specialized in analyzing ${docType} documents. Answer questions based on the document content. Be concise and helpful. If you don't know the answer, say so.`;
+      const prompt = `${systemPrompt}\n\nDocument type: ${docType}\nDocument content: ${docText.substring(0, 10000)}...\n\nConversation history:\n${context}\n\nUSER: ${message}\nAI:`;
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: prompt }]
+          }],
+          generationConfig: {
+            maxOutputTokens: 800
+          }
+        })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I couldn\'t generate a response.';
+    }
+    const GEMINI_API_KEY = "REMOVED";
+    const templates = {
+      policy: `Return JSON keys:\n- Title\n- Date\n- Jurisdiction\n- Summary\n- Scope / Applicability\n- Definitions (array)\n- Exemptions (array)\n- Implementation guidance (array)\n- Cross references (array)\n- Key points (array)\n- Obligations (array {actor, action})\n- Timelines (array {milestone, deadline})\n- Penalties (array {violation, consequence})\n- Benefits (array)\n- Authority contact\n- Other Details (small array)`,
+      judgment: `Return JSON keys:\n- Case name\n- Citation\n- Court\n- Date\n- Parties (array)\n- Procedural history\n- Facts\n- Issues (array)\n- Decision\n- Ratio (array)\n- Relief granted / Orders\n- Concurring opinions (array {author, gist})\n- Dissenting opinions (array {author, gist})\n- Costs\n- Outcome\n- Other Details (small array)`,
+      contract: `Return JSON keys:\n- Contract name\n- Parties (array)\n- Effective date\n- Term\n- Key obligations (array)\n- Payment terms (array)\n- Confidentiality\n- Representations & warranties (array)\n- Indemnification (array {indemnitor, scope})\n- Dispute resolution\n- Force majeure\n- Termination clauses\n- Amendment / notice mechanics\n- Governing law\n- Liabilities (array)\n- Other Details (small array)`,
+      research: `Return JSON keys:\n- Title\n- Authors\n- Institution\n- Date\n- DOI / URL\n- Abstract\n- Methodology\n- Data / sample size\n- Funding / conflicts of interest\n- Keywords (array)\n- Key findings (array)\n- Limitations (array)\n- Other Details (small array)`,
+      compliance: `Return JSON keys:\n- Title\n- Regulator\n- Date\n- Scope\n- Requirements (array)\n- Risk areas / controls (array {requirement, control})\n- Enforcement posture\n- Deadlines (array)\n- Penalties (array)\n- Exemptions (array)\n- Self-assessment tools (array URLs)\n- Reporting channels\n- Other Details (small array)`,
+      news: `Return JSON keys:\n- Headline\n- Outlet\n- Date\n- Jurisdiction\n- Summary\n- Source link\n- Primary sources cited (array)\n- Key quotes (array {speaker, quote})\n- Market impact\n- Affected sectors (array)\n- Next steps (array)\n- Other Details (small array)`,
+      standard: `Return JSON keys:\n- Standard title\n- Issuing body\n- Version / Year\n- Scope\n- Mandatory / voluntary\n- Key requirements (array)\n- Implementation guidance (array)\n- Cross references (array)\n- Other Details (small array)`,
+      treaty: `Return JSON keys:\n- Treaty name\n- Parties\n- Date signed\n- Date effective\n- Summary\n- Obligations (array)\n- Reservations / declarations (array)\n- Enforcement mechanisms\n- Cross references\n- Other Details (small array)`,
+    };
+    async function fetchViaProxy(url) {
+      const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+      if (!res.ok) throw new Error('Network error');
+      const type = res.headers.get('content-type') || '';
+      if (type.includes('application/pdf')) {
+        return extractPdfText(await res.arrayBuffer());
+      }
+      return res.text();
+    }
+    async function extractPdfText(buf) {
+      const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+      let text = '';
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        text += content.items.map(it => it.str).join(' ') + '\n';
+      }
+      return text;
+    }
+    function sanitizeJson(raw) {
+      let c = raw.trim();
+      if (c.startsWith('```')) c = c.replace(/```[a-z]|```/gi, '').trim();
+      const start = c.indexOf('{');
+      const end = c.lastIndexOf('}');
+      if (start !== -1 && end !== -1) c = c.slice(start, end + 1);
+      return c;
+    }
+    function buildPrompt(type, text) {
+      return `${templates[type]}\n\nReturn ONLY JSON. Document>>>\n${text}\n<<<`;
+    }
+    async function AISummarise(text, type) {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: buildPrompt(type, text) }] }] })
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message);
+      const result = JSON.parse(sanitizeJson(data.candidates?.[0]?.content?.parts?.[0]?.text || '{}'));
+
+      try {
+        if (currentUser) {
+          firebase.database().ref('userActivity').push({
+            email: currentUser.email,
+            timestamp: formatDateToGMT530(new Date()),
+            type: 'summary',
+            docType: type,
+            result: data
+          });
+        }
+      } catch (err) {
+        alert("Error logging in database:", err.message);
+      }
+
+      return result;
+    }
+    function titleCase(str) {
+      return str.replace(/\s*\([^)]*\)/g, '').replace(/_/g, ' ').replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.slice(1));
+    }
+    function shouldSkip(val) {
+      if (!val) return true;
+      if (typeof val === 'string' && ['NA', 'N/A'].includes(val.toUpperCase())) return true;
+      return false;
+    }
+    function renderAny(key, val) {
+      if (shouldSkip(val)) return '';
+      const nice = titleCase(key);
+      if (Array.isArray(val)) {
+        const items = val.map(v => {
+          if (shouldSkip(v)) return '';
+          if (typeof v === 'object') {
+            return `<li>${Object.entries(v).filter(([_, vv]) => !shouldSkip(vv)).map(([k, vv]) => `<strong>${titleCase(k)}:</strong> ${vv}`).join(' | ')}</li>`;
+          }
+          return `<li>${v}</li>`;
+        }).join('');
+        return items ? `<h3>${nice}</h3><ul>${items}</ul>` : '';
+      }
+      if (typeof val === 'object') {
+        const items = Object.entries(val).filter(([, v]) => !shouldSkip(v)).map(([k, v]) => `<li><strong>${titleCase(k)}:</strong> ${v}</li>`).join('');
+        return items ? `<h3>${nice}</h3><ul>${items}</ul>` : '';
+      }
+      return `<p><strong>${nice}:</strong> ${val}</p>`;
+    }
+    function renderSummary(js) {
+      const div = document.getElementById('summaryBox');
+      div.innerHTML = Object.entries(js).map(([k, v]) => renderAny(k, v)).join('');
+      div.hidden = false;
+      document.getElementById('downloadBtn').disabled = false;
+    }
+    function toggleLoading(flag) {
+      document.body.classList.toggle('loading', flag);
+      document.getElementById('loader').style.display = flag ? 'flex' : 'none';
+    }
+    async function loadFromUrl() {
+      const url = document.getElementById('docUrl').value.trim();
+      if (!url) return alert('Enter a URL');
+      toggleLoading(true);
+      try {
+        document.getElementById('manualText').value = await fetchViaProxy(url);
+      } catch (e) {
+        alert(e.message);
+      } finally {
+        toggleLoading(false);
+      }
+    }
+    document.getElementById('fileInput').addEventListener('change', async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      toggleLoading(true);
+      try {
+        if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+          document.getElementById('manualText').value = await extractPdfText(await file.arrayBuffer());
+        } else {
+          document.getElementById('manualText').value = await file.text();
+        }
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        toggleLoading(false);
+      }
+    });
+
+    document.getElementById('analyseBtn').addEventListener('click', async () => {
+      const text = document.getElementById('manualText').value.trim();
+      if (!text) return alert('Please load or paste text');
+      toggleLoading(true);
+      try {
+        const js = await AISummarise(text, document.getElementById('docType').value);
+        renderSummary(js);
+      } catch (e) {
+        alert(e.message);
+      } finally {
+        toggleLoading(false);
+      }
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      window.scrollTo(0, 0);
+      html2pdf().set({ margin: 10, filename: `${document.getElementById('docType').value}_report_NoLegaleseAI.pdf`, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(document.getElementById('summaryBox')).save();
+    });
+
+    function showDocInfo(type) {
+
+      document.querySelectorAll('.doc-tab').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+
+      event.target.classList.add('active');
+
+      const infoDiv = document.getElementById('docTypeInfo');
+      let content = '';
+
+      switch (type) {
+        case 'policy':
+          content = `
+        <h4><i style="margin-right: 7px;" class="fas fa-scroll"></i>Policy / Regulation</h4>
+        <ul>
+          <li>Title & Date</li>
+          <li>Jurisdiction</li>
+          <li>Summary</li>
+          <li>Scope / Applicability</li>
+          <li>Definitions</li>
+          <li>Exemptions</li>
+          <li>Implementation guidance</li>
+          <li>Cross references</li>
+          <li>Key points</li>
+          <li>Obligations (who must do what)</li>
+          <li>Timelines & deadlines</li>
+          <li>Penalties for violations</li>
+          <li>Benefits</li>
+          <li>Authority contact</li>
+        </ul>
+      `;
+          break;
+        case 'judgment':
+          content = `
+        <h4><i style="margin-right: 7px;" class="fas fa-gavel"></i>Court Judgment</h4>
+        <ul>
+          <li>Case name</li>
+          <li>Citation</li>
+          <li>Court</li>
+          <li>Date</li>
+          <li>Parties involved</li>
+          <li>Procedural history</li>
+          <li>Facts of the case</li>
+          <li>Legal issues</li>
+          <li>Decision</li>
+          <li>Reasoning (ratio decidendi)</li>
+          <li>Relief granted / Orders</li>
+          <li>Concurring opinions</li>
+          <li>Dissenting opinions</li>
+          <li>Costs</li>
+          <li>Outcome & implications</li>
+        </ul>
+      `;
+          break;
+        case 'contract':
+          content = `
+        <h4><i style="margin-right: 7px;" class="fas fa-file-signature"></i>Contract</h4>
+        <ul>
+          <li>Contract name</li>
+          <li>Parties</li>
+          <li>Effective date</li>
+          <li>Term</li>
+          <li>Key obligations</li>
+          <li>Payment terms</li>
+          <li>Confidentiality</li>
+          <li>Representations & warranties</li>
+          <li>Indemnification</li>
+          <li>Dispute resolution</li>
+          <li>Force majeure</li>
+          <li>Termination clauses</li>
+          <li>Amendment procedures</li>
+          <li>Governing law</li>
+          <li>Liabilities</li>
+        </ul>
+      `;
+          break;
+        case 'research':
+          content = `
+        <h4><i style="margin-right: 7px;" class="fas fa-microscope"></i>Research Paper</h4>
+        <ul>
+          <li>Title</li>
+          <li>Authors</li>
+          <li>Institution</li>
+          <li>Date</li>
+          <li>DOI / URL</li>
+          <li>Abstract</li>
+          <li>Methodology</li>
+          <li>Data / sample size</li>
+          <li>Funding sources</li>
+          <li>Conflicts of interest</li>
+          <li>Keywords</li>
+          <li>Key findings</li>
+          <li>Limitations</li>
+          <li>Conclusions</li>
+        </ul>
+      `;
+          break;
+        case 'compliance':
+          content = `
+        <h4><i style="margin-right: 7px;" class="fas fa-clipboard-check"></i>Compliance Guidance</h4>
+        <ul>
+          <li>Title</li>
+          <li>Regulator</li>
+          <li>Date</li>
+          <li>Scope</li>
+          <li>Requirements</li>
+          <li>Risk areas & controls</li>
+          <li>Enforcement posture</li>
+          <li>Deadlines</li>
+          <li>Penalties</li>
+          <li>Exemptions</li>
+          <li>Self-assessment tools</li>
+          <li>Reporting channels</li>
+          <li>Best practices</li>
+        </ul>
+      `;
+          break;
+        case 'news':
+          content = `
+        <h4><i style="margin-right: 7px;" class="fas fa-newspaper"></i>News Article</h4>
+        <ul>
+          <li>Headline</li>
+          <li>Publication outlet</li>
+          <li>Date</li>
+          <li>Jurisdiction</li>
+          <li>Summary</li>
+          <li>Source link</li>
+          <li>Primary sources cited</li>
+          <li>Key quotes</li>
+          <li>Market impact</li>
+          <li>Affected sectors</li>
+          <li>Next steps</li>
+          <li>Related developments</li>
+        </ul>
+      `;
+          break;
+        case 'standard':
+          content = `
+        <h4><i style="margin-right: 7px;" class="fas fa-cogs"></i>Technical Standard</h4>
+        <ul>
+          <li>Standard title</li>
+          <li>Issuing body</li>
+          <li>Version / Year</li>
+          <li>Scope</li>
+          <li>Mandatory / voluntary status</li>
+          <li>Key requirements</li>
+          <li>Implementation guidance</li>
+          <li>Cross references</li>
+          <li>Technical specifications</li>
+          <li>Compliance methods</li>
+        </ul>
+      `;
+          break;
+        case 'treaty':
+          content = `
+        <h4><i style="margin-right: 7px;" class="fas fa-handshake"></i>Treaty / Agreement</h4>
+        <ul>
+          <li>Treaty name</li>
+          <li>Parties</li>
+          <li>Date signed</li>
+          <li>Date effective</li>
+          <li>Summary</li>
+          <li>Obligations</li>
+          <li>Reservations / declarations</li>
+          <li>Enforcement mechanisms</li>
+          <li>Cross references</li>
+          <li>Implementation requirements</li>
+          <li>Dispute procedures</li>
+        </ul>
+      `;
+          break;
+      }
+
+      infoDiv.innerHTML = content;
+    }
+
+
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+      firebase.auth().signOut().catch(function (error) {
+        console.error('Logout error:', error);
+      });
+    });
+
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.getElementById('howItWorks').style.background = '#303134';
+      document.getElementById('docTypeInfo').style.background = '#202124';
+    }
+  </script>
+</body>
+
+</html>
