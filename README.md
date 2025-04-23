@@ -76,30 +76,6 @@ We process a wide range of document types, each with specialized extraction algo
 
 ---
 
-## 💬 **AI Chat Assistant**
-
-Our document chat feature allows you to have a natural conversation with your document after analysis. The assistant:
-
-- Uses advanced AI to understand document context and structure  
-- Maintains conversation history for intuitive follow-up questions  
-- Can answer specific questions about content, implications, or relationships  
-- Focuses on factual information contained in your document  
-- Provides concise, relevant answers rather than lengthy explanations  
-- Identifies sections, clauses, and specific provisions on request  
-
-Simply load your document, click **"Chat with Document"** and start asking questions!
-
-### 🧠 **Example Questions:**
-
-> "What are the key obligations in section 4?"  
-> "When is the filing deadline for annual reports?"  
-> "Explain the force majeure clause and its exceptions."  
-> "What penalties apply for late submissions?"  
-> "Who needs to approve the changes to governance structure?"  
-> "Summarize the methodology used in this research."
-
----
-
 ## 📥 **What We Extract**
 
 ### 🏛 **Policy / Regulation**
@@ -220,7 +196,31 @@ Simply load your document, click **"Chat with Document"** and start asking quest
 - Enforcement mechanisms  
 - Cross references  
 - Implementation requirements  
-- Dispute procedures  
+- Dispute procedures
+
+---
+
+## 💬 **AI Chat Assistant**
+
+Our document chat feature allows you to have a natural conversation with your document after analysis. The assistant:
+
+- Uses advanced AI to understand document context and structure  
+- Maintains conversation history for intuitive follow-up questions  
+- Can answer specific questions about content, implications, or relationships  
+- Focuses on factual information contained in your document  
+- Provides concise, relevant answers rather than lengthy explanations  
+- Identifies sections, clauses, and specific provisions on request  
+
+Simply load your document, click **"Chat with Document"** and start asking questions!
+
+### 🧠 **Example Questions:**
+
+> "What are the key obligations in section 4?"  
+> "When is the filing deadline for annual reports?"  
+> "Explain the force majeure clause and its exceptions."  
+> "What penalties apply for late submissions?"  
+> "Who needs to approve the changes to governance structure?"  
+> "Summarize the methodology used in this research."
 
 ---
 
