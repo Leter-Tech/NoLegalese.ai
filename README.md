@@ -314,4 +314,4 @@ Contributions are always welcome! Please follow these steps:
 
 ---
 
-Built with ❤️ for everyone who ever skimmed a 300-page PDF and still didn’t know what it said.
+Built with ❤️ to make complex documents easier to understand, faster to analyze, and simpler to act on — built for professionals who move fast and think deep.
