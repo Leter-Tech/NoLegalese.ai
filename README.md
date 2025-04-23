@@ -38,7 +38,7 @@ There is a clear need for an intelligent system that can:
 ### **🧠 Smart Report Generation**  
 > Automatically pulls key sections based on document type (e.g., obligations, penalties, legal citations) and converts it into a digestible 1–3 page summary.
 
-### **💬 Chat with Document**  
+### **💬 AI Chat with Document**  
 > Ask questions like "What’s the force majeure clause?" or "Who’s responsible for disclosures?" and get targeted answers instantly.
 
 ### **📤 Export to PDF**  
