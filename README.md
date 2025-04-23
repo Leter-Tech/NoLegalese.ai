@@ -202,7 +202,7 @@ We process a wide range of document types, each with specialized extraction algo
 
 ## 💬 **AI Chat Assistant**
 
-Our document chat feature allows you to have a natural conversation with your document after analysis. The assistant:
+Our AI document chat feature allows you to have a natural conversation with your document after analysis. The assistant:
 
 - Uses advanced AI to understand document context and structure  
 - Maintains conversation history for intuitive follow-up questions  
