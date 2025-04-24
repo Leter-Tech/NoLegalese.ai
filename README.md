@@ -2,7 +2,7 @@
 
 **Turning Complex Docs into Digestible Insights**
 
-**NoLegalese.ai** turns 80-page documents into 8-second reports. Drop in any **policy, court judgment, contract, research paper, standard, treaty, compliance memo or news article**. Our AI picks out the **who-must-do-what**, **deadlines**, **money bits**, **definitions**, **citations & quotables**—then hands you a **clean, sharable report**.  
+**NoLegalese.ai** turns 200-page documents into 20-second reports. Drop in any **policy, court judgment, contract, research paper, standard, treaty, compliance memo or news article**. Our AI picks out the **who-must-do-what**, **deadlines**, **money bits**, **definitions**, **citations & quotables**—then hands you a **clean, sharable report**.  
 
 With our **AI chat feature**, you can also ask specific questions about your document and get **instant, contextual answers**. Perfect for **lawyers, founders, policy wonks, journalists, researchers**, and **sleepless students**.
 
