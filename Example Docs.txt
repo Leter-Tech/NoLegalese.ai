@@ -20,6 +20,7 @@ https://www.iitk.ac.in/dosa/Contract%20document.pdf
 https://finance.cornell.edu/sites/default/files/prof-services-agrmt.pdf
 
 Research:
+
 https://papers.neurips.cc/paper/7181-attention-is-all-you-need.pdf
 https://proceedings.neurips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
 https://www.ipcc.ch/report/ar6/syr/downloads/report/IPCC_AR6_SYR_LongerReport.pdf
